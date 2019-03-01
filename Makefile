@@ -35,7 +35,8 @@ TESTS = \
     list_splice_tail \
     list_splice_init \
     list_splice_tail_init \
-    list_cut_position
+    list_cut_position \
+    list_merge_sort
 
 TESTS := $(addprefix tests/,$(TESTS))
 # dependency of source files
