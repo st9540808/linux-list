@@ -81,7 +81,7 @@ bool q_insert_head(queue_t *q, char *s)
     if (q->size == 0)
         q->tail = newh;
     q->size++;
-    list_add(&newh->list, &q->list);
+    list_add_tail(&newh->list, &q->list);
 
     return true;
 }
