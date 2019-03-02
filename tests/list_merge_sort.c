@@ -4,6 +4,7 @@
 #define _POSIX_C_SOURCE 200809L
 #endif
 
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,6 +83,19 @@ void list_merge_sort(queue_t *q)
     list_splice_tail(&sorted, &q->list);
 }
 
+int validate(queue_t *q)
+{
+    struct list_head *node;
+    list_for_each (node, &q->list) {
+        if (node->next == &q->list)
+            break;
+        if (strcmp(list_entry(node, list_ele_t, list)->value,
+                   list_entry(node->next, list_ele_t, list)->value) > 0)
+            return 0;
+    }
+    return 1;
+}
+
 queue_t *q_new()
 {
     queue_t *q = malloc(sizeof(queue_t));
@@ -155,10 +169,11 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    while (fgets(buf, 256, fp)) {
-        printf("%s", buf);
+    while (fgets(buf, 256, fp))
         q_insert_head(q, buf);
-    }
+
+    list_merge_sort(q);
+    assert(validate(q));
 
     fclose(fp);
     q_free(q);
